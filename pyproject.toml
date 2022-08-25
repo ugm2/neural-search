@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "neural-search"
+version = "0.1.0"
+description = "Neural Search engine"
+authors = ["ugmSorcero <unai@sorcero.com>"]
+license = "Apache License 2.0"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+farm-haystack = "^1.7.2"
+torch = "^1.12.1"
+torchvision = "^0.13.1"
+torchaudio = "^0.12.1"
+fastapi = "^0.80.0"
+uvicorn = "^0.18.3"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
