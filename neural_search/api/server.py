@@ -1,9 +1,8 @@
-from fastapi import HTTPException, FastAPI
-import uvicorn
+from fastapi import FastAPI
 import os
 
-from api.utils import cache_pipeline
-import api.models as models
+from neural_search.api.utils import cache_pipeline
+import neural_search.api.models as models
 import logging
 
 logger = logging.getLogger("Neural Search Server")

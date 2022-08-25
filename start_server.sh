@@ -1,0 +1,1 @@
+python -m uvicorn neural_search.api.server:app --reload --port 5002 --host 0.0.0.0
