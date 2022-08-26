@@ -1,0 +1,33 @@
+{
+    "version": "1.7.2",
+    "components": [
+        {
+            "name": "DocumentStore",
+            "type": "ElasticsearchDocumentStore"
+        }
+    ],
+    "pipelines": [
+        {
+            "name": "query",
+            "nodes": [
+                {
+                    "name": "DocumentStore",
+                    "inputs": [
+                        "Query"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "indexing",
+            "nodes": [
+                {
+                    "name": "DocumentStore",
+                    "inputs": [
+                        "File"
+                    ]
+                }
+            ]
+        }
+    ]
+}

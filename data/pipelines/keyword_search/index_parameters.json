@@ -1,0 +1,8 @@
+{
+    "DocumentStore": {
+        "host": "localhost",
+        "port": 9200,
+        "index": "test_documents",
+        "similarity": "dot_product"
+    }
+}
