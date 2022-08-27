@@ -20,15 +20,3 @@ def format_docs(documents: List[NeuralDocument]):
         }
         db_docs.append(Document(**db_doc))
     return db_docs, [doc.meta["id"] for doc in db_docs]
-
-
-def index_documents_pipeline(
-    indexing_pipeline,
-    documents: List[NeuralDocument],
-):
-    """Given a list of documents, index them using the given pipeline."""
-    documents, doc_ids = format_docs(documents)
-    # Index documents
-    indexing_pipeline.run(documents=documents)
-    return doc_ids
-

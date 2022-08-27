@@ -3,7 +3,7 @@ import os
 
 from neural_search.api.utils import cache_pipeline
 import neural_search.api.models as models
-from neural_search.core.utils import index_documents_pipeline
+from neural_search.core.search import index_documents_pipeline
 import logging
 
 logger = logging.getLogger("Neural Search Server")
