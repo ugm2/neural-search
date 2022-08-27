@@ -16,7 +16,7 @@ cached_pipelines = {}
 
 
 @app.post("/index/")
-def smart_index_v3(data: models.IndexingData):
+def neural_index(data: models.IndexingData):
     global cached_pipelines
     try:
         pipeline, cached_pipelines = cache_pipeline(
@@ -38,7 +38,7 @@ def smart_index_v3(data: models.IndexingData):
 
 
 @app.post("/search/")
-def smart_search_v3(request: models.SearchData):
+def neural_search(request: models.SearchData):
     global cached_pipelines
     try:
         pipeline, cached_pipelines = cache_pipeline(
