@@ -1,0 +1,18 @@
+{
+    "DocumentStore": {
+        "create_parameters": {
+            "host": "localhost",
+            "port": 9200,
+            "index": "test_documents",
+            "similarity": "dot_product"
+        }
+    },
+    "Retriever": {
+        "create_parameters": {
+            "document_store": "DocumentStore"
+        },
+        "run_parameters": {
+            "top_k": 10
+        }
+    }
+}

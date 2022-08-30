@@ -1,0 +1,26 @@
+{
+    "DocumentStore": {
+        "create_parameters": {
+            "host": "localhost",
+            "port": 9200,
+            "index": "test_documents",
+            "similarity": "dot_product"
+        }
+    },
+    "Retriever": {
+        "create_parameters": {
+            "document_store": "DocumentStore"
+        }
+    },
+    "Preprocessor": {
+        "create_parameters": {
+            "split_by": "word",
+            "split_length": 100,
+            "clean_empty_lines": true,
+            "clean_whitespace": true,
+            "clean_header_footer": true,
+            "split_respect_sentence_boundary": true,
+            "split_overlap": 0
+        }
+    }
+}

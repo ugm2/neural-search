@@ -1,0 +1,53 @@
+{
+    "version": "1.8.0",
+    "components": [
+        {
+            "name": "DocumentStore",
+            "type": "ElasticsearchDocumentStore"
+        },
+        {
+            "name": "Retriever",
+            "type": "DensePassageRetriever"
+        },
+        {
+            "name": "Preprocessor",
+            "type": "PreProcessor"
+        }
+    ],
+    "pipelines": [
+        {
+            "name": "query",
+            "nodes": [
+                {
+                    "name": "Retriever",
+                    "inputs": [
+                        "Query"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "indexing",
+            "nodes": [
+                {
+                    "name": "Preprocessor",
+                    "inputs": [
+                        "File"
+                    ]
+                },
+                {
+                    "name": "Retriever",
+                    "inputs": [
+                        "Preprocessor"
+                    ]
+                },
+                {
+                    "name": "DocumentStore",
+                    "inputs": [
+                        "Retriever"
+                    ]
+                }
+            ]
+        }
+    ]
+}

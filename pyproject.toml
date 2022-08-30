@@ -1,20 +1,24 @@
 [tool.poetry]
 name = "neural-search"
 version = "0.1.0"
-description = "Neural Search engine"
+description = ""
 authors = ["ugmSorcero <unai@sorcero.com>"]
-license = "Apache License 2.0"
 
 [tool.poetry.dependencies]
-python = "^3.8"
-farm-haystack = "^1.7.2"
-torch = "^1.12.1"
-torchvision = "^0.13.1"
-torchaudio = "^0.12.1"
-fastapi = "^0.80.0"
+python = ">=3.9,<3.9.7 || >3.9.7,<4.0"
+farm-haystack = "^1.8.0"
+fastapi = "^0.81.0"
 uvicorn = "^0.18.3"
+streamlit = {version = "^1.12.2", optional = true}
+st-annotated-text = {version = "^3.0.0", optional = true}
+streamlit-option-menu = {version = "^0.3.2", optional = true}
+streamlit-tags = {version = "^1.2.8", optional = true}
 
 [tool.poetry.dev-dependencies]
+black = "^22.6.0"
+
+[tool.poetry.extras]
+interface = ["streamlit","st-annotated-text","streamlit-option-menu","streamlit-tags"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

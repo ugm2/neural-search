@@ -1,0 +1,6 @@
+{
+    "text_field": "text",
+    "tags_field": "tags",
+    "metadata_fields": ["type"],
+    "service_url": "http://0.0.0.0:5002"
+}

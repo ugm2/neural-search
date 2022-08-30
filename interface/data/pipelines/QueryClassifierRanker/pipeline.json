@@ -1,0 +1,83 @@
+{
+    "components": [
+        {
+            "name": "QueryClassifier",
+            "type": "SklearnQueryClassifier"
+        },
+        {
+            "name": "DocumentStore",
+            "type": "ElasticsearchDocumentStore"
+        },
+        {
+            "name": "ESRetriever",
+            "type": "BM25Retriever"
+        },
+        {
+            "name": "DPRRetriever",
+            "type": "DensePassageRetriever"
+        },
+        {
+            "name": "Ranker",
+            "type": "SentenceTransformersRanker"
+        },
+        {
+            "name": "Preprocessor",
+            "type": "PreProcessor"
+        }
+    ],
+    "pipelines": [
+        {
+            "name": "query",
+            "nodes": [
+                {
+                    "name": "QueryClassifier",
+                    "inputs": [
+                        "Query"
+                    ]
+                },
+                {
+                    "name": "ESRetriever",
+                    "inputs": [
+                        "QueryClassifier.output_2"
+                    ]
+                },
+                {
+                    "name": "DPRRetriever",
+                    "inputs": [
+                        "QueryClassifier.output_1"
+                    ]
+                },
+                {
+                    "name": "Ranker",
+                    "inputs": [
+                        "DPRRetriever"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "indexing",
+            "nodes": [
+                {
+                    "name": "Preprocessor",
+                    "inputs": [
+                        "File"
+                    ]
+                },
+                {
+                    "name": "DPRRetriever",
+                    "inputs": [
+                        "Preprocessor"
+                    ]
+                },
+                {
+                    "name": "DocumentStore",
+                    "inputs": [
+                        "DPRRetriever"
+                    ]
+                }
+            ]
+        }
+    ],
+    "version": "1.8.0"
+}

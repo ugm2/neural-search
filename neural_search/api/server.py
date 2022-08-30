@@ -33,7 +33,7 @@ def neural_index(data: models.IndexingData):
         return {'indices': doc_ids}
     except Exception as e:
         import traceback
-        error_message = "ERROR: " + str(e) + " ERROR DETAIL: " + traceback.format_exc()
+        error_message = f"ERROR:{str(e)}  DETAIL: {traceback.format_exc()}"
         raise HTTPException(status_code=422, detail=error_message)
 
 
@@ -51,11 +51,10 @@ def neural_search(request: models.SearchData):
             search_pipeline=pipeline,
             queries=request.queries,
             filters=request.filters,
-            params=request.parameters,
-            min_score=request.min_score,
+            params=request.parameters
         )
         return {"matches": results}
     except Exception as e:
         import traceback
-        error_message = "ERROR: " + str(e) + " ERROR DETAIL: " + traceback.format_exc()
+        error_message = f"ERROR:{str(e)}  DETAIL: {traceback.format_exc()}"
         raise HTTPException(status_code=422, detail=error_message)

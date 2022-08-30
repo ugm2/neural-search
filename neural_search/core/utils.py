@@ -12,11 +12,13 @@ def format_docs(documents: List[NeuralDocument]):
 
     for doc in documents:
         doc_id = doc.id if doc.id else str(uuid.uuid4())
+        meta = doc.metadata
+        meta.update({"id": doc_id})
         db_doc = {
             "content": doc.text,
             "content_type": "text",
             "id": str(uuid.uuid4()),
-            "meta": {"tags": doc.tags, "id": doc_id},
+            "meta": meta,
         }
         db_docs.append(Document(**db_doc))
     return db_docs, [doc.meta["id"] for doc in db_docs]

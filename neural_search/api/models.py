@@ -5,7 +5,7 @@ from typing import List, Optional
 class NeuralDocument(BaseModel):
     text: str
     id: Optional[str] = None
-    tags: Optional[List[str]] = []
+    metadata: Optional[dict] = {}
 
 
 class IndexingData(BaseModel):
