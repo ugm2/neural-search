@@ -8,10 +8,10 @@ from streamlit_option_menu import option_menu
 from interface.components import (
     component_show_and_validate_pipeline,
     component_show_search_result,
+    component_text_input,
 )
-from neural_search.tools.search_utils import do_indexing, do_search, load_json
+from neural_search.utils.search_utils import do_indexing, do_search, load_json
 from interface.utils import get_pipelines
-from interface.index_functions import text_input
 
 SEARCH_RESULTS_KEY = "search_results_key"
 PIPELINES_FOLDER = "data/pipelines/"
@@ -47,27 +47,21 @@ def page_search(container):
         st.title("Query me!")
 
         ## SEARCH ##
-        # 1. Send query to search service
         query = st.text_input("Query")
-        min_score = 0.0
+        filters = {}
         with st.expander("Search parameters"):
-
-            min_score = st.slider(
-                "Minimum score", min_value=0.0, max_value=1.0, value=0.4
-            )
+            return_metadata = st.checkbox("Return metadata", value=True)
             st.markdown("# Apply Filters:")
-            filters = {}
             idx = 1
             while True:
                 col1, col2 = st.columns(2)
                 with col1:
-                    filter_name = st.text_input("Filter name", "filter", key=idx)
+                    filter_name = st.text_input("Filter name", "tags", key=idx)
                 with col2:
                     filter_values = st_tags(
                         label=filter_name,
                         text="Press enter to add more",
                         value=[],
-                        # maxtags = 4,
                         key=idx,
                     )
                 if filter_values != []:
@@ -84,14 +78,14 @@ def page_search(container):
                 parameters=search_params,
                 url=service_url,
                 filters=filters,
+                return_metadata=return_metadata,
             )
 
         if SEARCH_RESULTS_KEY in st.session_state:
-            if "matches" in st.session_state[SEARCH_RESULTS_KEY]:
+            if "detail" not in st.session_state[SEARCH_RESULTS_KEY]:
                 component_show_search_result(
                     container=container,
-                    results=st.session_state[SEARCH_RESULTS_KEY]["matches"][0],
-                    min_score=min_score,
+                    results=st.session_state[SEARCH_RESULTS_KEY][0]
                 )
             else:
                 st.error(st.session_state[SEARCH_RESULTS_KEY])
@@ -110,14 +104,10 @@ def page_index(container):
     with container:
         st.title("Index time!")
 
-        with st.expander("Index parameters"):
-
-            reset_index = st.checkbox("Reset Index", value=True)
-
         component_show_and_validate_pipeline(container, index_pipe, index_params)
 
         input_funcs = {
-            "Raw Text": (text_input, "card-text"),
+            "Raw Text": (component_text_input, "card-text"),
         }
         selected_input = option_menu(
             "Input Text",
@@ -128,7 +118,7 @@ def page_index(container):
             orientation="horizontal",
         )
 
-        corpus = input_funcs[selected_input][0]()
+        corpus = input_funcs[selected_input][0](container)
 
         if len(corpus) > 0:
             index_results = None
@@ -138,7 +128,6 @@ def page_index(container):
                     pipeline=index_pipe,
                     parameters=index_params,
                     url=service_url,
-                    reset_index=reset_index,
                 )
             if index_results:
                 st.write(index_results)

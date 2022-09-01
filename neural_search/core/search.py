@@ -1,7 +1,7 @@
 from haystack import Pipeline
 from typing import List, Optional, Union
 from neural_search.api.utils import handle_pipeline_parameters
-from neural_search.core.utils import format_docs
+from neural_search.utils.utils import format_docs
 from neural_search.api.models import NeuralDocument
 from typing import List
 
@@ -20,8 +20,9 @@ def index_documents_pipeline(
 def run_search_pipeline(
     search_pipeline: Pipeline,
     queries: List[str],
-    filters: Union[dict, List[dict]] = {},
+    filters: Union[List[dict], dict] = {},
     params: dict = {},
+    return_metadata: bool = False,
     min_score: Optional[float] = 0.0,
 ):
     """Given a list of queries, search using the given pipeline and filters/parameters."""
@@ -40,6 +41,7 @@ def run_search_pipeline(
                         "score": res.score,
                         "id": res.meta["id"],
                         "fragment_id": res.id,
+                        "metadata": res.meta if return_metadata else {},
                     }
                     for res in matches
                     if res.score is not None and res.score >= min_score

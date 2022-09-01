@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 
 
 class NeuralDocument(BaseModel):
@@ -22,7 +22,8 @@ class SearchData(BaseModel):
     queries: List[str]
     pipeline: dict
     parameters: dict
-    filters: List[dict] = None
+    filters: Union[List[dict], dict] = {}
+    return_metadata: bool = False
 
 
 class SearchResponse(BaseModel):

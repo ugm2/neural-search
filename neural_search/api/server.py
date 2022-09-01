@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import FastAPI, HTTPException
 import os
 
@@ -37,7 +38,7 @@ def neural_index(data: models.IndexingData):
         raise HTTPException(status_code=422, detail=error_message)
 
 
-@app.post("/search/", response_model=models.SearchResponse)
+@app.post("/search/", response_model=List[List[models.SearchResponse]])
 def neural_search(request: models.SearchData):
     global cached_pipelines
     try:
@@ -51,7 +52,8 @@ def neural_search(request: models.SearchData):
             search_pipeline=pipeline,
             queries=request.queries,
             filters=request.filters,
-            params=request.parameters
+            params=request.parameters,
+            return_metadata=request.return_metadata,
         )
         return [
             [models.SearchResponse(**match) for match in r]

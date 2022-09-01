@@ -1,4 +1,6 @@
 import streamlit as st
+from annotated_text import annotated_text
+from streamlit_tags import st_tags
 
 
 def component_show_and_validate_pipeline(container, pipeline, params):
@@ -21,15 +23,60 @@ def component_show_and_validate_pipeline(container, pipeline, params):
                 st.write(params)
 
 
-def component_show_search_result(container, results, min_score):
+def component_show_search_result(container, results):
     with container:
         for idx, document in enumerate(results):
-            if document["score"] < min_score:
-                continue
-            match_doc_id = document["id"]
             st.markdown(f"### Match {idx+1}")
-            with st.expander("Show text"):
-                st.write(document["text"])
-            st.markdown(f"**Document**: {match_doc_id}")
+            if "metadata" in document and "tags" in document["metadata"]:
+                annotated_text(
+                    *[(tag, "", "orange") for tag in document["metadata"]["tags"]]
+                )
+            st.markdown(f"**Text**: {document['text']}")
+            st.markdown(f"**Document**: {document['id']}")
             st.markdown(f"**Score**: {document['score']:.3f}")
+            if "metadata" in document and document["metadata"] != {}:
+                with st.expander("Metadata"):
+                    st.write(document["metadata"])
             st.markdown("---")
+
+
+def component_text_input(container):
+    """Draw the Text Input widget"""
+    with container:
+        texts = []
+        doc_id = 1
+        with st.expander("Enter documents"):
+            while True:
+                text = st.text_input(f"Document {doc_id}", key=doc_id)
+                metadata = {}
+                idx = 1
+                while True:
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        metadata_name = st.text_input(
+                            "Metadata name", "tags", key=f"{doc_id}_{idx}"
+                        )
+                    with col2:
+                        metadata_values = st_tags(
+                            label=metadata_name,
+                            text="Press enter to add more",
+                            value=[],
+                            key=f"{doc_id}{idx}",
+                        )
+                    if metadata_values != []:
+                        metadata[metadata_name] = metadata_values
+                        idx += 1
+                    else:
+                        break
+                if text != "":
+                    texts.append({"text": text, "metadata": metadata})
+                    doc_id += 1
+                    st.markdown("---")
+                else:
+                    break
+        corpus = [
+            {"text": doc["text"], "metadata": doc["metadata"], "id": doc_id}
+            for doc_id, doc in enumerate(texts)
+        ]
+        return corpus
+
