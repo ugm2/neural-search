@@ -15,7 +15,7 @@ app = FastAPI()
 cached_pipelines = {}
 
 
-@app.post("/index/")
+@app.post("/index/", response_model=models.IndexingResponse)
 def neural_index(data: models.IndexingData):
     global cached_pipelines
     try:
@@ -30,14 +30,14 @@ def neural_index(data: models.IndexingData):
             documents=data.documents,
             params=data.parameters
         )
-        return {'indices': doc_ids}
+        return models.IndexingResponse(indices=doc_ids)
     except Exception as e:
         import traceback
         error_message = f"ERROR:{str(e)}  DETAIL: {traceback.format_exc()}"
         raise HTTPException(status_code=422, detail=error_message)
 
 
-@app.post("/search/")
+@app.post("/search/", response_model=models.SearchResponse)
 def neural_search(request: models.SearchData):
     global cached_pipelines
     try:
@@ -53,7 +53,10 @@ def neural_search(request: models.SearchData):
             filters=request.filters,
             params=request.parameters
         )
-        return {"matches": results}
+        return [
+            [models.SearchResponse(**match) for match in r]
+            for r in results
+        ]
     except Exception as e:
         import traceback
         error_message = f"ERROR:{str(e)}  DETAIL: {traceback.format_exc()}"

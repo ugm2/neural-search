@@ -14,8 +14,20 @@ class IndexingData(BaseModel):
     parameters: dict
 
 
+class IndexingResponse(BaseModel):
+    indices: List[str]
+
+
 class SearchData(BaseModel):
     queries: List[str]
     pipeline: dict
     parameters: dict
     filters: List[dict] = None
+
+
+class SearchResponse(BaseModel):
+    text: str
+    score: float
+    id: str
+    fragment_id: str
+    metadata: dict = {}
