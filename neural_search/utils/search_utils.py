@@ -34,7 +34,6 @@ def do_search(
         "filters": filters,
         "return_metadata": return_metadata,
     }
-    print(search_params)
 
     response = requests.post(f"{url}/search", json=search_params)
     return response.json()

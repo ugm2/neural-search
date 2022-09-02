@@ -1,6 +1,9 @@
 import streamlit as st
 from annotated_text import annotated_text
 from streamlit_tags import st_tags
+from interface.convert_data import parse_from_cvs
+import json
+import pandas as pd
 
 
 def component_show_and_validate_pipeline(container, pipeline, params):
@@ -80,3 +83,46 @@ def component_text_input(container):
         ]
         return corpus
 
+def component_file_input(container):
+    """Draw the File Input Widget"""
+    with container:
+        st.sidebar.download_button(
+            label="Download example csv data for indexing",
+            data=pd.read_csv("data/passages_coronavirus_metadata.csv")
+            .to_csv()
+            .encode("utf-8"),
+            file_name="passages_coronavirus_metadata.csv",
+            mime="text/csv",
+        )
+        json_file = {}
+        metadata_fields = []
+        uploaded_file = st.file_uploader("Upload File (JSON/CSV)")
+        if uploaded_file is not None:
+            # Process CSV
+            if uploaded_file.type == "text/csv":
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    text_field = st.text_input("Text field in CSV", "passage")
+                with col2:
+                    metadata_fields = st_tags(label="Enter metadata", value=["tags"])
+                with col3:
+                    id_field = st.text_input("ID field if any")
+                    id_field = id_field if id_field != "" else None
+                if text_field is not None:
+                    # Convert to JSON
+                    json_file = parse_from_cvs(
+                        uploaded_file, text_field, metadata_fields, id_field
+                    )
+            # Process JSON
+            elif uploaded_file.type == "application/json":
+                json_file = json.loads(uploaded_file.read())
+            else:
+                st.error("File must be of type CSV/JSON")
+        # Process final JSON file
+        corpus = []
+        for key, values in json_file.items():
+            document = {"text": values["text"], "id": key}
+            del values["text"]
+            document.update({"metadata": values})
+            corpus.append(document)
+        return corpus

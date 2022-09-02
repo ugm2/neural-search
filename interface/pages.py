@@ -6,6 +6,7 @@ from streamlit_tags import st_tags
 from streamlit_option_menu import option_menu
 
 from interface.components import (
+    component_file_input,
     component_show_and_validate_pipeline,
     component_show_search_result,
     component_text_input,
@@ -108,6 +109,7 @@ def page_index(container):
 
         input_funcs = {
             "Raw Text": (component_text_input, "card-text"),
+            "File": (component_file_input, "file-earmark-arrow-up"),
         }
         selected_input = option_menu(
             "Input Text",

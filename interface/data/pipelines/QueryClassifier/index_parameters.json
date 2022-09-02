@@ -1,0 +1,19 @@
+{
+    "Preprocessor": {
+        "create_parameters": {
+            "clean_header_footer": true,
+            "split_length": 100
+        }
+    },
+    "DocumentStore": {
+        "create_parameters": {
+            "host": "127.0.0.1",
+            "index": "documents"
+        }
+    },
+    "DPRRetriever": {
+        "create_parameters": {
+            "document_store": "DocumentStore"
+        }
+    }
+}

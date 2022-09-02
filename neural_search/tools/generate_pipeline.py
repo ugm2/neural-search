@@ -12,9 +12,9 @@ pipeline_generator.generate(
     index_pipeline=index_pipeline,
     search_pipeline=search_pipeline,
     # Name of the folder that will be created. It should be a meaningful name
-    pipeline_name="QueryClassifierRanker",
+    pipeline_name="QueryClassifier",
     # Folder where the Pipeline folder and its JSON files will be generated
-    folder="test_data/json_pipelines/",
+    folder="interface/data/pipelines/",
     # Whether to draw the pipelines. They will be saved as a pipeline.png
     draw_pipeline=True,
 )

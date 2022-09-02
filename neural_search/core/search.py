@@ -32,10 +32,14 @@ def run_search_pipeline(
         filters = [filters for _ in range(len(queries))]
     run_parameters.update({"filters": filters})
     matches_queries = search_pipeline.run_batch(queries=queries, params=run_parameters)
+    node_id = matches_queries['node_id'] if 'node_id' in matches_queries else None
     for matches in matches_queries["documents"]:
-        results.append(
-            sorted(
-                [
+        query_results = []
+        for res in matches:
+            if res.score is not None and res.score >= min_score:
+                metadata = res.meta
+                metadata['node_id'] = node_id
+                query_results.append(
                     {
                         "text": res.content,
                         "score": res.score,
@@ -43,11 +47,8 @@ def run_search_pipeline(
                         "fragment_id": res.id,
                         "metadata": res.meta if return_metadata else {},
                     }
-                    for res in matches
-                    if res.score is not None and res.score >= min_score
-                ],
-                key=lambda x: x["score"],
-                reverse=True,
-            )
+                )
+        results.append(
+            sorted(query_results, key=lambda x: x["score"], reverse=True)
         )
     return results

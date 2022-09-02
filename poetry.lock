@@ -1010,6 +1010,14 @@ python-versions = ">=3.6"
 plugins = ["importlib-metadata"]
 
 [[package]]
+name = "pygraphviz"
+version = "1.10"
+description = "Python interface to Graphviz"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
 name = "pyjwt"
 version = "2.4.0"
 description = "JSON Web Token implementation in Python"
@@ -1747,7 +1755,7 @@ interface = ["streamlit", "st-annotated-text", "streamlit-option-menu", "streaml
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<3.9.7 || >3.9.7,<4.0"
-content-hash = "5e9c91080c0cbe636455a86bbacf5b6a31274eaaad14209cd4b45ec4c3bda40f"
+content-hash = "d47551d056f7fe8d58ea8bea0516390921c23f42e9af4283f980fdb8de12192f"
 
 [metadata.files]
 alembic = []
@@ -1839,6 +1847,7 @@ pyarrow = []
 pydantic = []
 pydeck = []
 pygments = []
+pygraphviz = []
 pyjwt = []
 pympler = []
 pyparsing = []

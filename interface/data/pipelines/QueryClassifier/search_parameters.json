@@ -1,0 +1,36 @@
+{
+    "KeywordVSQuestionStatement": {
+        "create_parameters": {}
+    },
+    "QuestionVSStatement": {
+        "create_parameters": {
+            "model_name_or_path": "shahrukhx01/question-vs-statement-classifier"
+        }
+    },
+    "DocumentStore": {
+        "create_parameters": {
+            "host": "127.0.0.1",
+            "index": "documents"
+        }
+    },
+    "ESRetriever": {
+        "create_parameters": {
+            "document_store": "DocumentStore"
+        }
+    },
+    "DPRRetriever": {
+        "create_parameters": {
+            "document_store": "DocumentStore"
+        }
+    },
+    "DPRRetriever2": {
+        "create_parameters": {
+            "document_store": "DocumentStore"
+        }
+    },
+    "Reader": {
+        "create_parameters": {
+            "model_name_or_path": "deepset/roberta-base-squad2"
+        }
+    }
+}

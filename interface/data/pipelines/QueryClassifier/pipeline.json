@@ -1,0 +1,103 @@
+{
+    "components": [
+        {
+            "name": "KeywordVSQuestionStatement",
+            "type": "TransformersQueryClassifier"
+        },
+        {
+            "name": "QuestionVSStatement",
+            "type": "TransformersQueryClassifier"
+        },
+        {
+            "name": "DocumentStore",
+            "type": "ElasticsearchDocumentStore"
+        },
+        {
+            "name": "ESRetriever",
+            "type": "BM25Retriever"
+        },
+        {
+            "name": "DPRRetriever",
+            "type": "DensePassageRetriever"
+        },
+        {
+            "name": "DPRRetriever2",
+            "type": "DensePassageRetriever"
+        },
+        {
+            "name": "Reader",
+            "type": "FARMReader"
+        },
+        {
+            "name": "Preprocessor",
+            "type": "PreProcessor"
+        }
+    ],
+    "pipelines": [
+        {
+            "name": "query",
+            "nodes": [
+                {
+                    "name": "KeywordVSQuestionStatement",
+                    "inputs": [
+                        "Query"
+                    ]
+                },
+                {
+                    "name": "QuestionVSStatement",
+                    "inputs": [
+                        "KeywordVSQuestionStatement.output_1"
+                    ]
+                },
+                {
+                    "name": "ESRetriever",
+                    "inputs": [
+                        "KeywordVSQuestionStatement.output_2"
+                    ]
+                },
+                {
+                    "name": "DPRRetriever",
+                    "inputs": [
+                        "QuestionVSStatement.output_2"
+                    ]
+                },
+                {
+                    "name": "DPRRetriever2",
+                    "inputs": [
+                        "QuestionVSStatement.output_1"
+                    ]
+                },
+                {
+                    "name": "Reader",
+                    "inputs": [
+                        "DPRRetriever2"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "indexing",
+            "nodes": [
+                {
+                    "name": "Preprocessor",
+                    "inputs": [
+                        "File"
+                    ]
+                },
+                {
+                    "name": "DPRRetriever",
+                    "inputs": [
+                        "Preprocessor"
+                    ]
+                },
+                {
+                    "name": "DocumentStore",
+                    "inputs": [
+                        "DPRRetriever"
+                    ]
+                }
+            ]
+        }
+    ],
+    "version": "1.8.0"
+}
