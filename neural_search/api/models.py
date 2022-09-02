@@ -22,7 +22,7 @@ class SearchData(BaseModel):
     queries: List[str]
     pipeline: dict
     parameters: dict
-    filters: Union[List[dict], dict] = {}
+    filters: Optional[Union[List[dict], dict]] = {}
     return_metadata: bool = False
 
 
