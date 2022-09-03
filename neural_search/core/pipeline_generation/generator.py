@@ -135,7 +135,7 @@ class PipelineGenerator:
 
 
 if __name__ == "__main__":
-    from smart_search.core.pipeline_generation.pipelines import keyword_search_pipeline
+    from neural_search.core.pipeline_generation.pipelines import keyword_search_pipeline
 
     search_pipeline, index_pipeline = keyword_search_pipeline(
         es_endpoint="127.0.0.1", es_port=9200, index="documents"
